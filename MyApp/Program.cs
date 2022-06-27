@@ -69,12 +69,12 @@
 // File.Move(NuevoArchivo, NuevoArchivoCopia);
 
 
-string RutaArchivo = "/Users/juanigramajo/Desktop/Tempo/text1.txt";
-string texto = File.ReadAllText(RutaArchivo);
-System.Console.WriteLine("Contenido: {0}", texto);
+// string RutaArchivo = "/Users/juanigramajo/Desktop/Tempo/text1.txt";
+// string texto = File.ReadAllText(RutaArchivo);
+// System.Console.WriteLine("Contenido: {0}", texto);
 
 
-List<string> LineasDelArchivo = File.ReadAllLines(RutaArchivo).ToList();
+// List<string> LineasDelArchivo = File.ReadAllLines(RutaArchivo).ToList();
 
 
 // foreach (string Linea in LineasDelArchivo)
@@ -83,7 +83,51 @@ List<string> LineasDelArchivo = File.ReadAllLines(RutaArchivo).ToList();
 // }
 
 
-System.Console.WriteLine("\t" + LineasDelArchivo[2]);
+// System.Console.WriteLine("\t" + LineasDelArchivo[2]);
 
-string[] MisLineas = {"Pruebs 1", "Prueba 2"};
-File.WriteAllLines(RutaArchivo, MisLineas);
+// string[] MisLineas = {"Pruebs 1", "Prueba 2"};
+// File.WriteAllLines(RutaArchivo, MisLineas);
+
+
+
+
+List<string> ListaDeArchivos = new List<string>();
+
+Console.WriteLine("\nIngrese el path de una carpeta a ser buscada: ");
+string PathCarpeta = "/Users/juanigramajo/" + Console.ReadLine();
+
+if (!(Directory.Exists(PathCarpeta)))
+{
+    Console.WriteLine("\nNo existe la carpeta. ¿Desea crearla?\nOPCIONES\n[S] Si\n[N] No\nIngrese una opción: ");
+    char salida = Char.ToLower(Convert.ToChar(Console.ReadLine()));
+    while ((salida != 's') && (salida != 'n'))
+    {
+        Console.WriteLine("\nError de formato.\nOPCIONES\n[S] Si\n[N] No\nIngrese una opción: ");
+        salida = Char.ToLower(Convert.ToChar(Console.ReadLine()));
+    }
+
+    if (salida == 's')
+    {
+        Directory.CreateDirectory(PathCarpeta);
+    }
+
+} else
+{
+    ListaDeArchivos = Directory.GetFiles(PathCarpeta).ToList();
+}
+
+int bandera = 0;
+
+foreach (string fileX in ListaDeArchivos)
+{
+    Console.WriteLine(fileX);
+
+    string ext = (Path.GetExtension(fileX));
+    string nombre = Path.GetFileNameWithoutExtension(fileX);
+
+    string linea = "\n" + (bandera++) + " - " + nombre + " - " + ext;
+
+    File.AppendAllText(PathCarpeta + "/index.csv", linea);
+
+}
+
